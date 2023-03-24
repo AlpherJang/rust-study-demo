@@ -1,39 +1,15 @@
-use rand::Rng;
-use std::cmp::Ordering;
-use std::io;
-
+struct Struct{
+    e: i32
+}
 fn main() {
-    let a = 10;
-    let b:i32= 20;
-    let c = 30i32;
-    let d = 30_i32;
-    let e = add(add(a,b),add(c,d));
-    println!("e is {}",e);
-    println!("Guess the number!");
-    let secret_number = rand::thread_rng().gen_range(1..=100);
-    println!("The secret number is: {secret_number}");
-    loop {
-        println!("Please input your number");
-        let mut guess = String::new();
-        io::stdin()
-            .read_line(&mut guess)
-            .expect("Failed to read line");
-        let guess: u32= match guess.trim().parse() {
-            Ok(num) => num,
-            Err(_)=>continue,
-        };
-        println!("You guessed: {guess}");
-        match guess.cmp(&secret_number) {
-            Ordering::Less => println!("Too small!"),
-            Ordering::Equal => {
-                println!("You win!");
-                break;
-            },
-            Ordering::Greater => println!("Too big!"),
-        }
-    }
+    let (a, b, c, d, e);
+
+    (a, b) = (1, 2);
+    // _ 代表匹配一个值，但是我们不关心具体的值是什么，因此没有使用一个变量名而是使用了 _
+    [c, .., d, _] = [1, 2, 3, 4, 5];
+    Struct { e, .. } = Struct { e: 5 };
+
+    // assert_eq!([1, 2, 1, 4, 5], [a, b, c, d, e]);
+    println!("a is {:?},b is {:?},c is {:?},d is {:?},e is {:?}",a,b,c,d,e)
 }
 
-fn add(i:i32,j:i32)->i32{
-    i+j
-}
