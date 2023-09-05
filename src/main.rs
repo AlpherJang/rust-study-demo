@@ -1,15 +1,33 @@
-struct Struct{
-    e: i32
-}
+use std::io;
+use rand::Rng;
+use std::cmp::Ordering;
+
 fn main() {
-    let (a, b, c, d, e);
+    println!("猜数！");
 
-    (a, b) = (1, 2);
-    // _ 代表匹配一个值，但是我们不关心具体的值是什么，因此没有使用一个变量名而是使用了 _
-    [c, .., d, _] = [1, 2, 3, 4, 5];
-    Struct { e, .. } = Struct { e: 5 };
+    let secret_number = rand::thread_rng().gen_range(1..101);
 
-    // assert_eq!([1, 2, 1, 4, 5], [a, b, c, d, e]);
-    println!("a is {:?},b is {:?},c is {:?},d is {:?},e is {:?}",a,b,c,d,e)
+    println!("随机数是: {}",secret_number);
+    loop {
+        println!("猜测一个数");
+        
+        let mut guess = String::new();
+
+        io::stdin().read_line(&mut guess).expect("无法读取行");
+
+        let guess: u32 =match guess.trim().parse(){
+            Ok(num)=>num,
+            Err(_)=>continue,
+        };
+        println!("你猜的数是: {}",guess);
+
+        match guess.cmp(&secret_number){
+            Ordering::Less=>println!("Too small"),
+            Ordering::Greater=>println!("Too Big!"),
+            Ordering::Equal=>{
+                println!("You win!");
+                break;
+            },
+        }
+    }
 }
-
